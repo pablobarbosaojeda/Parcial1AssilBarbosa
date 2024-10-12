@@ -1,6 +1,6 @@
-# PARCIAL 1 FABRICA DE CAMPANAS DE GAUSS ASSIL ASRI, PABLO BARBOSA y DANIEL SOUSA
+# PARCIAL 1 FABRICA DE CAMPANAS DE GAUSS ASSIL ASRI y PABLO BARBOSA 
 
-# Link al Repositorio: https://github.com/pablobarbosaojeda/Parcial1AssilBarbosaDani.git
+# Link al Repositorio: https://github.com/pablobarbosaojeda/Parcial1AssilBarbosa.git
 
 # Puerto de Arranque del Proyecto: Port:4432 / http://localhost:4432/
 Este proyecto simula una línea de producción en una fábrica de campanas de Gauss y visualiza la distribución de componentes a través de una interfaz web. Se utiliza `Spring Boot` para el backend y `Chart.js` en el frontend. Los componentes producidos se distribuyen en distintas posiciones usando un modelo de probabilidad.
