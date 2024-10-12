@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Factory Distribution</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        let chart;
+
+        async function fetchDistribution() {
+            const response = await fetch('/distribution');
+            const distribution = await response.json();
+            const labels = Object.keys(distribution).map(Number).sort((a, b) => a - b);
+            const data = labels.map(label => distribution[label] || 0);
+
+            if (chart) {
+                chart.data.labels = labels;
+                chart.data.datasets[0].data = data;
+                chart.update();
+            } else {
+                const ctx = document.getElementById('distributionChart').getContext('2d');
+                chart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Ball Distribution',
+                            data: data,
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 1,
+                            fill: false,
+                            tension: 0.4 // Smooth the line to resemble a bell curve
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        async function startFactory() {
+            await fetch('/start');
+            setInterval(fetchDistribution, 1000); // Fetch distribution every second
+        }
+
+        window.onload = startFactory;
+    </script>
+</head>
+<body>
+<h1>Factory Distribution</h1>
+<canvas id="distributionChart" width="400" height="200"></canvas>
+</body>
+</html>

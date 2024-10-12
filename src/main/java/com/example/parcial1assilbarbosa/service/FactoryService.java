@@ -1,34 +1,37 @@
 package com.example.parcial1assilbarbosa.service;
 
-
-import com.example.parcial1assilbarbosa.util.scheduler;
+import com.example.parcial1assilbarbosa.model.Ball;
 import org.springframework.stereotype.Service;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class FactoryService {
-    private final BlockingQueue<Component> buffer = new LinkedBlockingQueue<>(10);
-    private final ExecutorService executorService = Executors.newFixedThreadPool(4);
-    private final int[] distributionData = new int[10]; // Para la visualización
+    private final ExecutorService executorService = Executors.newFixedThreadPool(10);
+    private final Map<Integer, Integer> distribution = new HashMap<>();
 
-    public FactoryService() {
-        // Configurar las estaciones de trabajo
-        executorService.submit(new WorkstationService(buffer, "Base", 1000));
-        executorService.submit(new WorkstationService(buffer, "Clavo", 800));
-        executorService.submit(new WorkstationService(buffer, "Canal", 1200));
-
-        // Configurar la línea de ensamblaje
-        executorService.submit(new AssemblyLineService(buffer));
+    public void startProduction() {
+        for (int i = 0; i < 1000; i++) {
+            executorService.submit(new Ball(this));
+        }
     }
 
-    public int[] getDistributionData() {
-        return distributionData; // Simulación para la visualización de distribución normal
+    public synchronized void updateDistribution(int position) {
+        distribution.merge(position, 1, Integer::sum);
     }
 
-    public void shutdown() {
-        executorService.shutdown();
+    public synchronized void updateDistribution(String componentType) {
+        int position = componentType.hashCode() % 10; // Example conversion logic
+        updateDistribution(position);
+    }
+
+    public synchronized Map<String, Integer> getDistribution() {
+        Map<String, Integer> stringKeyDistribution = new HashMap<>();
+        for (Map.Entry<Integer, Integer> entry : distribution.entrySet()) {
+            stringKeyDistribution.put(String.valueOf(entry.getKey()), entry.getValue());
+        }
+        return stringKeyDistribution;
     }
 }

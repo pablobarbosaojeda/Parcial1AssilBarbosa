@@ -1,8 +1,7 @@
 package com.example.parcial1assilbarbosa.model;
 
-
 public class Component {
-    private String type;
+    private final String type;
 
     public Component(String type) {
         this.type = type;
