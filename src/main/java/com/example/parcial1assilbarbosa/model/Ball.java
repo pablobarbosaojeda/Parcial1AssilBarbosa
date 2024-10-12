@@ -13,7 +13,7 @@ public class Ball implements Runnable {
     public void run() {
         try {
             int position = 0;
-            for (int i = 0; i < 10; i++) { // Simulate 10 levels of the board
+            for (int i = 0; i < 30; i++) { // Simulate 50 levels of the board
                 position += Math.random() < 0.5 ? -1 : 1;
                 Thread.sleep(10); // Simulate time taken to fall through each level
             }
