@@ -18,10 +18,12 @@ public class WorkstationService implements Runnable {
             while (true) {
                 Component component = new Component(componentType);
                 buffer.put(component);
+                System.out.println("Produced component: " + component.getType());
                 Thread.sleep(100); // Simulate production time
             }
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
+            System.err.println("WorkstationService interrupted: " + e.getMessage());
         }
     }
 }
